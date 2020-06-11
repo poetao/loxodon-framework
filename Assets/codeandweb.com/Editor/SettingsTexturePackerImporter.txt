@@ -1,9 +1,24 @@
 version: 2
 importPivots: 1
 tpsheetFileNames:
+- Assets/Arts/Textures/altas/cat.tpsheet
+- Assets/Arts/Textures/altas/man.tpsheet
+- Assets/Arts/Textures/altas/paper.tpsheet
+- Assets/Arts/Textures/altas/talk.tpsheet
+- Assets/Arts/Textures/altas/ui.tpsheet
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
 textureFileNames:
+- Assets/Arts/Textures/altas/cat.png
+- Assets/Arts/Textures/altas/man.png
+- Assets/Arts/Textures/altas/paper.png
+- Assets/Arts/Textures/altas/talk.png
+- Assets/Arts/Textures/altas/ui.png
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.png
 normalmapFileNames:
+- 
+- 
+- 
+- 
+- 
 - Assets/codeandweb.com/Example/SpriteSheet/sprites_n.png
 enableDebugOutput: 0

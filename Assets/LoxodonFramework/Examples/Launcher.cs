@@ -80,7 +80,7 @@ namespace Loxodon.Framework.Examples
             yield return null;
 
             IUIViewLocator locator = context.GetService<IUIViewLocator>();
-            StartupWindow window = locator.LoadWindow<StartupWindow>(winContainer, "UI/Startup/Startup");
+            StartupWindow window = locator.LoadWindow<StartupWindow>(winContainer, "UI/Loading");
             window.Create();
             ITransition transition = window.Show().OnStateChanged((w, state) =>
             {

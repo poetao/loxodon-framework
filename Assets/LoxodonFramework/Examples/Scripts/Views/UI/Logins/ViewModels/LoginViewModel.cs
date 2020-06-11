@@ -58,9 +58,7 @@ namespace Loxodon.Framework.Examples
         private InteractionRequest interactionFinished;
         private InteractionRequest<Notification> toastRequest;
 
-        public LoginViewModel(IAccountService accountService, Localization localization, Preferences globalPreferences)
-        {
-            this.localization = localization;
+        public LoginViewModel(IAccountService accountService, Localization localization, Preferences globalPreferences) { this.localization = localization;
             this.accountService = accountService;
             this.globalPreferences = globalPreferences;
 
