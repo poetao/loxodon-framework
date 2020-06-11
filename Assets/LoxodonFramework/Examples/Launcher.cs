@@ -55,7 +55,7 @@ namespace Game
 			bundle.Start();
 
 			/* Initialize the ui view locator and register UIViewLocator */
-			container.Register<IUIViewLocator>(new Locators.ResourcesViewLocator ());
+			container.Register<IUIViewLocator>(new Locators.ResourcesView ());
 
 			/* Initialize the localization service */
 			//CultureInfo cultureInfo = Locale.GetCultureInfoByLanguage (SystemLanguage.English);

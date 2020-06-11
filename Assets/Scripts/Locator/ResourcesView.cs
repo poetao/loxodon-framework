@@ -32,7 +32,7 @@ using Loxodon.Framework.Views;
 
 namespace Game.Locators
 {
-    public class ResourcesViewLocator : UIViewLocatorBase
+    public class ResourcesView : UIViewLocatorBase
     {
         private GlobalWindowManager globalWindowManager;
         private Dictionary<string, WeakReference> templates = new Dictionary<string, WeakReference>();

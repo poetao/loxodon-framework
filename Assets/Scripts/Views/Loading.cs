@@ -101,33 +101,33 @@ namespace Game.Views
 
         protected void OnOpenLoginWindow(object sender, InteractionEventArgs args)
         {
-            //try
-            //{
-            //    LoginWindow loginWindow = viewLocator.LoadWindow<LoginWindow>(this.WindowManager, "UI/Logins/Login");
-            //    var callback = args.Callback;
-            //    var loginViewModel = args.Context;
+            try
+            {
+                var loginWindow = viewLocator.LoadWindow<Login>(this.WindowManager, "UI/Login");
+                var callback = args.Callback;
+                var loginViewModel = args.Context;
 
-            //    if (callback != null)
-            //    {
-            //        EventHandler handler = null;
-            //        handler = (window, e) =>
-            //        {
-            //            loginWindow.OnDismissed -= handler;
-            //            if (callback != null)
-            //                callback();
-            //        };
-            //        loginWindow.OnDismissed += handler;
-            //    }
+                if (callback != null)
+                {
+                    EventHandler handler = null;
+                    handler = (window, e) =>
+                    {
+                        loginWindow.OnDismissed -= handler;
+                        if (callback != null)
+                            callback();
+                    };
+                    loginWindow.OnDismissed += handler;
+                }
 
-            //    loginWindow.SetDataContext(loginViewModel);
-            //    loginWindow.Create();
-            //    loginWindow.Show();
-            //}
-            //catch (Exception e)
-            //{
-            //    if (log.IsWarnEnabled)
-            //        log.Warn(e);
-            //}
+                loginWindow.SetDataContext(loginViewModel);
+                loginWindow.Create();
+                loginWindow.Show();
+            }
+            catch (Exception e)
+            {
+                if (log.IsWarnEnabled)
+                    log.Warn(e);
+            }
         }
     }
 }

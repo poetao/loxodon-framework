@@ -1,3 +1,7 @@
 /Library
 /Temp
 /obj
+/Packages
+/Logs
+/.vs
+*.csproj
