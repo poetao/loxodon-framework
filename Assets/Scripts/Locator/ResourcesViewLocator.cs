@@ -30,7 +30,7 @@ using UnityEngine;
 using Loxodon.Framework.Asynchronous;
 using Loxodon.Framework.Views;
 
-namespace Game.Locatorss
+namespace Game.Locators
 {
     public class ResourcesViewLocator : UIViewLocatorBase
     {

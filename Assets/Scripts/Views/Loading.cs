@@ -64,7 +64,7 @@ namespace Game.Views
             bindingSet.Bind().For(v => v.OnOpenLoginWindow).To(vm => vm.LoginRequest);
             bindingSet.Bind().For(v => v.OnDismissRequest).To(vm => vm.DismissRequest);
 
-            bindingSet.Bind(this.progressBarSlider).For("value", "onValueChanged").To("ProgressBar.Progress").TwoWay();
+            //bindingSet.Bind(this.progressBarSlider).For("value", "onValueChanged").To("ProgressBar.Progress").TwoWay();
             //bindingSet.Bind (this.progressBarSlider).For (v => v.value, v => v.onValueChanged).To (vm => vm.ProgressBar.Progress).TwoWay ();
 
             /* //by the way,You can expand your attributes. 		 
@@ -73,12 +73,12 @@ namespace Game.Views
 		        proxyFactory.Register (new ProxyPropertyInfo<GameObject, bool> (info, go => go.activeSelf, (go, value) => go.SetActive (value)));
 		    */
 
-            bindingSet.Bind(this.progressBarSlider.gameObject).For(v => v.activeSelf).To(vm => vm.ProgressBar.Enable).OneWay();
-            bindingSet.Bind(this.progressBarText).For(v => v.text).ToExpression(vm => string.Format("{0}%", Mathf.FloorToInt(vm.ProgressBar.Progress * 100f))).OneWay();/* expression binding,support only OneWay mode. */
-            bindingSet.Bind(this.tipText).For(v => v.text).To(vm => vm.ProgressBar.Tip).OneWay();
+            //bindingSet.Bind(this.progressBarSlider.gameObject).For(v => v.activeSelf).To(vm => vm.ProgressBar.Enable).OneWay();
+            //bindingSet.Bind(this.progressBarText).For(v => v.text).ToExpression(vm => string.Format("{0}%", Mathf.FloorToInt(vm.ProgressBar.Progress * 100f))).OneWay();/* expression binding,support only OneWay mode. */
+            //bindingSet.Bind(this.tipText).For(v => v.text).To(vm => vm.ProgressBar.Tip).OneWay();
 
             //bindingSet.Bind(this.button).For(v => v.onClick).To(vm=>vm.OnClick()).OneWay(); //Method binding,only bound to the onClick event.
-            bindingSet.Bind(this.button).For(v => v.onClick).To(vm => vm.Click).OneWay();//Command binding,bound to the onClick event and interactable property.
+            //bindingSet.Bind(this.button).For(v => v.onClick).To(vm => vm.Click).OneWay();//Command binding,bound to the onClick event and interactable property.
             bindingSet.Build();
 
             this.viewModel.Unzip();

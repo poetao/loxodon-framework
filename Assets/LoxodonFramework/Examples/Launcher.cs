@@ -32,7 +32,7 @@ using Loxodon.Framework.Binding;
 using Loxodon.Framework.Localizations;
 using Loxodon.Framework.Services;
 
-namespace Loxodon.Framework.Examples
+namespace Game
 {
 	public class Launcher : MonoBehaviour
     {
@@ -55,21 +55,21 @@ namespace Loxodon.Framework.Examples
 			bundle.Start();
 
 			/* Initialize the ui view locator and register UIViewLocator */
-			container.Register<IUIViewLocator>(new ResourcesViewLocator ());
+			container.Register<IUIViewLocator>(new Locators.ResourcesViewLocator ());
 
 			/* Initialize the localization service */
 			//CultureInfo cultureInfo = Locale.GetCultureInfoByLanguage (SystemLanguage.English);
 			CultureInfo cultureInfo = Locale.GetCultureInfo();
             var localization = Localization.Current;
             localization.CultureInfo = cultureInfo;
-            localization.AddDataProvider(new ResourcesDataProvider("LocalizationExamples", new XmlDocumentParser()));
+            localization.AddDataProvider(new Localizations.ResourcesDataProvider("LocalizationExamples", new XmlDocumentParser()));
 
 			/* register Localization */
 			container.Register<Localization>(localization);
 
 			/* register AccountRepository */
-			IAccountRepository accountRepository = new AccountRepository();
-			container.Register<IAccountService>(new AccountService(accountRepository));
+			Repositories.IAccount accountRepository = new Repositories.Account();
+			container.Register<Services.IAccount>(new Services.Account(accountRepository));
 		}
 
         IEnumerator Start()
@@ -80,7 +80,7 @@ namespace Loxodon.Framework.Examples
             yield return null;
 
             IUIViewLocator locator = context.GetService<IUIViewLocator>();
-            StartupWindow window = locator.LoadWindow<StartupWindow>(winContainer, "UI/Loading");
+            var window = locator.LoadWindow<Views.Loading>(winContainer, "UI/Loading");
             window.Create();
             ITransition transition = window.Show().OnStateChanged((w, state) =>
             {
