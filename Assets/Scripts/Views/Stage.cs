@@ -1,28 +1,4 @@
-﻿/*
- * MIT License
- *
- * Copyright (c) 2018 Clark Yang
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of 
- * this software and associated documentation files (the "Software"), to deal in 
- * the Software without restriction, including without limitation the rights to 
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies 
- * of the Software, and to permit persons to whom the Software is furnished to do so, 
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all 
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
- * SOFTWARE.
- */
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
 
@@ -35,9 +11,9 @@ using Loxodon.Framework.Interactivity;
 
 namespace Game.Views
 {
-    using ViewModel = ViewModels.Loading;
+    using ViewModel = ViewModels.Stage;
 
-    public class Loading : Window
+    public class Stage : Window
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(Loading));
 
@@ -61,7 +37,7 @@ namespace Game.Views
             //this.SetDataContext (viewModel);
 
             /* databinding, Bound to the ViewModel. */
-            BindingSet<Loading, ViewModel> bindingSet = this.CreateBindingSet(viewModel);
+            BindingSet<Stage, ViewModel> bindingSet = this.CreateBindingSet(viewModel);
             bindingSet.Bind().For(v => v.OnOpenLoginWindow).To(vm => vm.LoginRequest);
             bindingSet.Bind().For(v => v.OnDismissRequest).To(vm => vm.DismissRequest);
 
@@ -95,6 +71,14 @@ namespace Game.Views
             }
         }
 
+        public void OnOpenLevel(int level)
+        {
+            var window = viewLocator.LoadWindow<Level>(this.WindowManager, $"UI/Level{level}");
+            window.Create();
+            window.Show();
+	        window.viewModel.StageLevel = level; 
+        }
+
         protected void OnDismissRequest(object sender, InteractionEventArgs args)
         {
             this.Dismiss();
@@ -104,9 +88,25 @@ namespace Game.Views
         {
             try
             {
-                var stage = viewLocator.LoadWindow<Stage>(this.WindowManager, "UI/Stage");
-                stage.Create();
-                stage.Show();
+                var loginWindow = viewLocator.LoadWindow<Login>(this.WindowManager, "UI/Login");
+                var callback = args.Callback;
+                var loginViewModel = args.Context;
+
+                if (callback != null)
+                {
+                    EventHandler handler = null;
+                    handler = (window, e) =>
+                    {
+                        loginWindow.OnDismissed -= handler;
+                        if (callback != null)
+                            callback();
+                    };
+                    loginWindow.OnDismissed += handler;
+                }
+
+                loginWindow.SetDataContext(loginViewModel);
+                loginWindow.Create();
+                loginWindow.Show();
             }
             catch (Exception e)
             {
