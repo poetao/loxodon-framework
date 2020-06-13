@@ -32,7 +32,7 @@ namespace Game.Domains
 	{
 		private int level;
 
-		public string Level {
+		public int Level {
 			get{ return this.level; }
 			set{ this.Set<int> (ref this.level, value, "Level"); }
 		}

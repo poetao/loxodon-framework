@@ -45,7 +45,6 @@ namespace Game.Repositories
 		{
 			executor = new ThreadExecutor ();
 			var account = new Domain(){ Level = 0 };
-			cache.Add (account.Username, account);
 		}
 
 		public virtual IAsyncResult<Domain> Get (string username)
@@ -60,14 +59,6 @@ namespace Game.Repositories
 		public virtual IAsyncResult<Domain> Save (Domain account)
 		{
 			return executor.Execute<Domain> (new Action<IPromise<Domain>> (promise => {
-				if (cache.ContainsKey (account.Username)) {
-					promise.SetException (new Exception ("The account already exists."));
-					return;
-				}
-
-				cache.Add (account.Username, account);
-				promise.SetResult (account);
-				return;
 			}));
 		}
 
