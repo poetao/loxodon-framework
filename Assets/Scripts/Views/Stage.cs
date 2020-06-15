@@ -76,7 +76,6 @@ namespace Game.Views
             var window = viewLocator.LoadWindow<Level>(this.WindowManager, $"UI/Level{level}");
             window.Create();
             window.Show();
-	        window.viewModel.StageLevel = level; 
         }
 
         protected void OnDismissRequest(object sender, InteractionEventArgs args)
@@ -86,33 +85,6 @@ namespace Game.Views
 
         protected void OnOpenLoginWindow(object sender, InteractionEventArgs args)
         {
-            try
-            {
-                var loginWindow = viewLocator.LoadWindow<Login>(this.WindowManager, "UI/Login");
-                var callback = args.Callback;
-                var loginViewModel = args.Context;
-
-                if (callback != null)
-                {
-                    EventHandler handler = null;
-                    handler = (window, e) =>
-                    {
-                        loginWindow.OnDismissed -= handler;
-                        if (callback != null)
-                            callback();
-                    };
-                    loginWindow.OnDismissed += handler;
-                }
-
-                loginWindow.SetDataContext(loginViewModel);
-                loginWindow.Create();
-                loginWindow.Show();
-            }
-            catch (Exception e)
-            {
-                if (log.IsWarnEnabled)
-                    log.Warn(e);
-            }
         }
     }
 }

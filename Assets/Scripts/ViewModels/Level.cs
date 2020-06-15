@@ -22,41 +22,11 @@ namespace Game.ViewModels
         private static readonly ILog log = LogManager.GetLogger(typeof(ViewModelBase));
 
 	    private int stageLevel = 0;
-        private ProgressBar progressBar = new ProgressBar();
-        private SimpleCommand command;
-        private Localization localization;
+        private int answerValue = 0;
+	    private int rightAnswer = 7;
 
-        private InteractionRequest<Login> loginRequest;
         private InteractionRequest dismissRequest;
-
-        public Level() : this(null)
-        {
-        }
-
-        public Level(IMessenger messenger) : base(messenger)
-        {
-            ApplicationContext context = Context.GetApplicationContext();
-            this.localization = context.GetService<Localization>();
-            var accountService = context.GetService<Services.IAccount>();
-            var globalPreferences = context.GetGlobalPreferences();
-
-            this.loginRequest = new InteractionRequest<Login>(this);
-            this.dismissRequest = new InteractionRequest(this);
-
-            var loginViewModel = new Login(accountService, localization, globalPreferences);
-
-            this.command = new SimpleCommand(() =>
-            {
-                this.command.Enabled = false;
-                this.loginRequest.Raise(loginViewModel, vm =>
-                {
-                    this.command.Enabled = true;
-
-                    if (vm.Account != null)
-                        this.LoadScene();
-                });
-            });
-        }
+        private InteractionRequest answerWrongRequest;
 
         public int StageLevel
         {
@@ -64,14 +34,20 @@ namespace Game.ViewModels
 	        set { this.stageLevel = value; }
         }
 
-        public ICommand Click
-        {
-            get { return this.command; }
+	    public int AnswerValue { 
+            get { return this.answerValue; }
+	        set { this.Set(ref this.answerValue, value, nameof(AnswerValue)); }
         }
 
-        public IInteractionRequest LoginRequest
+        public Level() : this(null)
         {
-            get { return this.loginRequest; }
+        }
+
+        public Level(IMessenger messenger) : base(messenger)
+        {
+	        this.AnswerValue = 1;
+            this.dismissRequest = new InteractionRequest(this);
+            this.answerWrongRequest = new InteractionRequest(this);
         }
 
         public IInteractionRequest DismissRequest
@@ -79,67 +55,33 @@ namespace Game.ViewModels
             get { return this.dismissRequest; }
         }
 
-        public void OnClick()
+	    public IInteractionRequest AnswerWrongRequest
+	    {
+	        get { return this.answerWrongRequest; }
+	    }
+
+        public void doClose()
         {
-            log.Debug("onClick");
             dismissRequest.Raise();
         }
 
-        /// <summary>
-        /// run on the background thread.
-        /// </summary>
-        /// <param name="promise">Promise.</param>
-        protected void DoUnzip(IProgressPromise<float> promise)
-        {
-            var progress = 0f;
-            while (progress < 1f)
-            {
-                progress += 0.01f;
-                promise.UpdateProgress(progress);
-#if NETFX_CORE
-                Task.Delay(30).Wait();       
-#else
-                //Thread.Sleep (50);
-                Thread.Sleep(30);
-#endif
-            }
-            promise.SetResult();
-        }
+	    public void doPlus()
+	    {
+	        this.AnswerValue += 1;        
+	    }
 
-        /// <summary>
-        /// Simulate a unzip task.
-        /// </summary>
-        public void Unzip()
-        {
-        }
+	    public void doMinus()
+	    {
+	        this.AnswerValue = Math.Max(0, this.AnswerValue - 1);        
+	    }
 
-
-        /// <summary>
-        /// run on the main thread.
-        /// </summary>
-        /// <returns>The check.</returns>
-        /// <param name="promise">Promise.</param>
-        protected IEnumerator DoLoadScene(IProgressPromise<float> promise)
-        {
-            ResourceRequest request = Resources.LoadAsync<GameObject>("Scenes/Jungle");
-            while (!request.isDone)
-            {
-                promise.UpdateProgress(request.progress);
-                yield return null;
-            }
-
-            GameObject sceneTemplate = (GameObject)request.asset;
-            GameObject.Instantiate(sceneTemplate);
-            promise.UpdateProgress(1f);
-            promise.SetResult();
-        }
-
-        /// <summary>
-        /// Simulate a loading task.
-        /// </summary>
-        public void LoadScene()
-        {
-        }
-
+	    public void doConfirm()
+	    {
+	        if (this.AnswerValue != this.rightAnswer)
+    		{
+                this.answerWrongRequest.Raise();		        
+		        return;
+		    }
+	    }
     }
 }
