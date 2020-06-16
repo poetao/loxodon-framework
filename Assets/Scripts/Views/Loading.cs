@@ -107,6 +107,7 @@ namespace Game.Views
                 var stage = viewLocator.LoadWindow<Stage>(this.WindowManager, "UI/Stage");
                 stage.Create();
                 stage.Show();
+		        this.Dismiss();
             }
             catch (Exception e)
             {
